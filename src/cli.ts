@@ -17,15 +17,14 @@ import {
 } from './retrieval.js';
 import { assessRelevance } from './relevance.js';
 
-const REPO_USAGE = 'Usage: codebuster repo check <path>';
-const STATUS_USAGE = 'Usage: codebuster repo status <path>';
-const SEARCH_USAGE = 'Usage: codebuster search "<query>" --repo <path>';
+const REPO_USAGE = 'Usage: codecraft repo check <path>';
+const STATUS_USAGE = 'Usage: codecraft repo status <path>';
+const SEARCH_USAGE = 'Usage: codecraft search "<query>" --repo <path>';
 const USAGE = `Usage:
-  codebuster repo check <path>
-  codebuster repo status <path>
-  codebuster search "<query>" --repo <path>
-
-Compatibility alias: localcode`;
+  codecraft repo check <path>
+  codecraft repo status <path>
+  codecraft search "<query>" --repo <path>
+`;
 
 export interface CliDependencies {
   search(query: string, repositoryPath: string): Promise<SearchResult>;
@@ -83,7 +82,7 @@ async function runDiagnostic(args: readonly string[], streams: CliStreams): Prom
   }
   const [query, repoFlag, repositoryPath] = args;
   if (!query || repoFlag !== '--repo' || !repositoryPath) {
-    streams.stderr.write('Usage: codebuster diagnose "query" --repo <path>\n');
+    streams.stderr.write('Usage: codecraft diagnose "query" --repo <path>\n');
     return 2;
   }
 

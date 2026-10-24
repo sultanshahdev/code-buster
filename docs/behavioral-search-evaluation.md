@@ -56,7 +56,7 @@ function/line-level matches.
 
 | Repository | Positive / negative | Baseline R@1 | Intent-aware R@1 | Baseline R@5 | Intent-aware R@5 |
 |---|---:|---:|---:|---:|---:|
-| LocalCode | 6 / 1 | 5/6 | 6/6 | 6/6 | 6/6 |
+| CodeCraft | 6 / 1 | 5/6 | 6/6 | 6/6 | 6/6 |
 | Express | 5 / 1 | 5/5 | 5/5 | 5/5 | 5/5 |
 | Axios | 6 / 1 | 5/6 | 5/6 | 5/6 | 5/6 |
 | Fastify | 6 / 1 | 2/6 | 4/6 | 4/6 | 5/6 |
@@ -65,10 +65,10 @@ function/line-level matches.
 Both configurations correctly abstained on the 4 negative queries.
 Pooled MRR@5 was 0.804 baseline versus 0.884 intent-aware.
 The Fastify Reply query moved from false negative to within the top
-five; Fastify wrapThenable and hooks and LocalCode concurrency improved
+five; Fastify wrapThenable and hooks and CodeCraft concurrency improved
 rank. No observed regression on this small evaluation slice.
 
-Embedding precomputation took 16s for LocalCode, 74s for Express,
+Embedding precomputation took 16s for CodeCraft, 74s for Express,
 226s for Axios, and 317s for Fastify. RSS snapshots were around
 1.1-1.4 GiB, not peak process memory. Warm per-query latency
 does not include indexing.

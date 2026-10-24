@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LocalCodeLogo, Button } from '../ui/Primitives';
+import { CodeCraftLogo, Button } from '../ui/Primitives';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 
 export function LandingNavbar({ onOpenWorkspace }: { onOpenWorkspace: () => void }) {
@@ -17,8 +17,8 @@ export function LandingNavbar({ onOpenWorkspace }: { onOpenWorkspace: () => void
     <header className="landing-nav-header">
       <div className="landing-nav-inner">
         <div className="landing-brand" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <LocalCodeLogo size={32} />
-          <span className="landing-brand__title">LocalCode</span>
+          <CodeCraftLogo size={32} />
+          <span className="landing-brand__title">CodeCraft</span>
           <span className="landing-brand__badge">Intelligence</span>
         </div>
 

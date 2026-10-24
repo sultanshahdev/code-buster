@@ -7,7 +7,7 @@ import { PersistentCachingEmbedder } from '../src/persistent-embedding-cache.js'
 
 const source = 'File: src/auth.ts\nexport const auth = true;';
 
-async function cacheDirectory(): Promise<string> { return mkdtemp(join(tmpdir(), 'localcode-embedding-cache-')); }
+async function cacheDirectory(): Promise<string> { return mkdtemp(join(tmpdir(), 'codecraft-embedding-cache-')); }
 function fake(calls: string[][]) { return { embed: async (texts: readonly string[]) => { calls.push([...texts]); return texts.map((_, i) => [i + 1, 0]); } }; }
 
 test('persistent cache reuses source embeddings after restart without persisting queries', async () => {
@@ -55,13 +55,40 @@ test('invalid vectors and disabled persistence fall back to inference and cache 
     await writeFile(join(dir, 'unrelated.txt'), 'must survive');
     await cache.clear();
     assert.deepEqual(await readdir(dir).catch(() => []), ['unrelated.txt']);
-    const previous = process.env['LOCALCODE_DISABLE_PERSISTENT_CACHE'];
-    process.env['LOCALCODE_DISABLE_PERSISTENT_CACHE'] = '1';
+    const previous = process.env['CODECRAFT_DISABLE_PERSISTENT_CACHE'];
+    process.env['CODECRAFT_DISABLE_PERSISTENT_CACHE'] = '1';
     try {
       await new PersistentCachingEmbedder(fake(calls), 'disabled:model', dir).embed([source], { sourceStartIndex: 0 });
       assert.equal((await readdir(dir).catch(() => [])).some(name => name.endsWith('.json')), false);
     } finally {
-      if (previous === undefined) delete process.env['LOCALCODE_DISABLE_PERSISTENT_CACHE']; else process.env['LOCALCODE_DISABLE_PERSISTENT_CACHE'] = previous;
+      if (previous === undefined) delete process.env['CODECRAFT_DISABLE_PERSISTENT_CACHE']; else process.env['CODECRAFT_DISABLE_PERSISTENT_CACHE'] = previous;
     }
   } finally { await rm(dir, { recursive: true, force: true }); }
+});
+
+test('CodeCraft cache configuration preserves legacy settings and existing cache paths', async () => {
+  const { defaultEmbeddingCacheDirectory, persistentCacheDisabled } = await import('../src/persistent-embedding-cache.js');
+  const { mkdir } = await import('node:fs/promises');
+  const directory = await cacheDirectory();
+  const keys = ['XDG_CACHE_HOME', 'CODECRAFT_EMBEDDING_CACHE_DIR', 'LOCALCODE_EMBEDDING_CACHE_DIR', 'CODECRAFT_DISABLE_PERSISTENT_CACHE', 'LOCALCODE_DISABLE_PERSISTENT_CACHE'];
+  const saved = keys.map(key => process.env[key]);
+  try {
+    keys.forEach(key => { delete process.env[key]; });
+    process.env['XDG_CACHE_HOME'] = directory;
+    assert.equal(defaultEmbeddingCacheDirectory(), join(directory, 'codecraft', 'embeddings'));
+    const legacy = join(directory, 'localcode-intelligence', 'embeddings');
+    await mkdir(legacy, { recursive: true });
+    assert.equal(defaultEmbeddingCacheDirectory(), legacy);
+    process.env['LOCALCODE_EMBEDDING_CACHE_DIR'] = join(directory, 'custom-old');
+    assert.equal(defaultEmbeddingCacheDirectory(), join(directory, 'custom-old'));
+    process.env['CODECRAFT_EMBEDDING_CACHE_DIR'] = join(directory, 'custom-new');
+    assert.equal(defaultEmbeddingCacheDirectory(), join(directory, 'custom-new'));
+    process.env['LOCALCODE_DISABLE_PERSISTENT_CACHE'] = '1';
+    assert.equal(persistentCacheDisabled(), true);
+    process.env['CODECRAFT_DISABLE_PERSISTENT_CACHE'] = '0';
+    assert.equal(persistentCacheDisabled(), false);
+  } finally {
+    keys.forEach((key, index) => { if (saved[index] === undefined) delete process.env[key]; else process.env[key] = saved[index]!; });
+    await rm(directory, { recursive: true, force: true });
+  }
 });

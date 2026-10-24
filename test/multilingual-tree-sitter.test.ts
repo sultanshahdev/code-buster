@@ -9,7 +9,7 @@ const roots: string[] = [];
 afterEach(async () => Promise.all(roots.splice(0).map(root => rm(root, { recursive: true, force: true }))));
 
 test('WASM grammars load offline and extract declarations and AST identifier usages for every structural language', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'localcode-wasm-')); roots.push(root);
+  const root = await mkdtemp(join(tmpdir(), 'codecraft-wasm-')); roots.push(root);
   const fixtures: Array<[string, string, string, string]> = [
     ['sample.py', 'class Box:\n  def use(self): return target\ndef target(): pass\ntarget()\n', 'Box', 'target'],
     ['sample.go', 'type Box struct{}\nfunc target() {}\nfunc use() { target() }\n', 'Box', 'target'],

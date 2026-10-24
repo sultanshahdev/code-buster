@@ -13,7 +13,7 @@ export function StorySections() {
             </div>
             <h2 className="landing-story-title">Ask what the code does. Not where it lives.</h2>
             <p className="landing-story-desc">
-              Searching by exact filename or identifier only works if you already know how the codebase is structured. LocalCode matches queries against learned vector representations of code behavior, letting you describe operations in plain natural language.
+              Searching by exact filename or identifier only works if you already know how the codebase is structured. CodeCraft matches queries against learned vector representations of code behavior, letting you describe operations in plain natural language.
             </p>
             <ul className="landing-story-points">
               <li>Formulate questions naturally without knowing internal jargon</li>
@@ -50,7 +50,7 @@ export function StorySections() {
             </div>
             <h2 className="landing-story-title">Follow the code, not a guess.</h2>
             <p className="landing-story-desc">
-              LocalCode does not invent synthetic answers or hallucinate code explanations. Every search candidate links directly to exact line numbers, readable source files, and inspectable surrounding context.
+              CodeCraft does not invent synthetic answers or hallucinate code explanations. Every search candidate links directly to exact line numbers, readable source files, and inspectable surrounding context.
             </p>
             <ul className="landing-story-points">
               <li>Inspect real lines of code with adjacent context buffers</li>
@@ -169,7 +169,7 @@ export function StorySections() {
             </div>
             <h2 className="landing-story-title">Your repository. Your machine.</h2>
             <p className="landing-story-desc">
-              LocalCode runs locally on 127.0.0.1. No code snippets, embeddings, or queries are ever sent to an external LLM, third-party analytics, or remote cloud servers.
+              CodeCraft runs locally on 127.0.0.1. No code snippets, embeddings, or queries are ever sent to an external LLM, third-party analytics, or remote cloud servers.
             </p>
             <ul className="landing-story-points">
               <li>Completely offline-capable once embedding models are downloaded</li>

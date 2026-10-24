@@ -22,7 +22,7 @@ afterEach(async () => {
 });
 
 async function createFixture(): Promise<string> {
-  const directory = await mkdtemp(join(tmpdir(), 'localcode-cli-test-'));
+  const directory = await mkdtemp(join(tmpdir(), 'codecraft-cli-test-'));
   temporaryDirectories.push(directory);
   return directory;
 }
@@ -76,7 +76,7 @@ test('returns usage exit status when the repository argument is missing', async 
   assert.equal(result.exitCode, 2);
   assert.equal(result.stdout, '');
   assert.match(result.stderr, /Repository path is required/);
-  assert.match(result.stderr, /Usage: codebuster repo check <path>/);
+  assert.match(result.stderr, /Usage: codecraft repo check <path>/);
 });
 
 test('returns failure exit status for a nonexistent directory', async () => {

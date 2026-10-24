@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * LocalCode Intelligence — localhost-only HTTP API server.
+ * CodeCraft — localhost-only HTTP API server.
  * Binds to 127.0.0.1:4317 by default.
  */
 
@@ -290,7 +290,7 @@ async function safeReadSourceLines(
 
 // ── Route handlers ────────────────────────────────────────────────────────────
 async function handleHealth(res: ServerResponse): Promise<void> {
-  sendJson(res, 200, { ok: true, service: 'localcode-intelligence', version: '0.1.0' });
+  sendJson(res, 200, { ok: true, service: 'codecraft', version: '0.1.0' });
 }
 
 async function handleLanguages(res: ServerResponse): Promise<void> {
@@ -832,13 +832,13 @@ async function handleRequest(req: IncomingMessage, res: ServerResponse, performS
 
 // ── Start ─────────────────────────────────────────────────────────────────────
 /** Optional search injection enables realistic HTTP contract tests without loading the ML model. */
-export function createLocalcodeServer(options: { performSearch?: typeof searchRepository } = {}) {
+export function createCodeCraftServer(options: { performSearch?: typeof searchRepository } = {}) {
   return createServer((req, res) => handleRequest(req, res, options.performSearch ?? searchRepository));
 }
 
 if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const server = createLocalcodeServer();
+  const server = createCodeCraftServer();
   server.listen(PORT, HOST, () => {
-    console.log(`LocalCode Intelligence API listening on http://${HOST}:${PORT}`);
+    console.log(`CodeCraft API listening on http://${HOST}:${PORT}`);
   });
 }

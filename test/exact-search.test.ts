@@ -8,7 +8,7 @@ import { searchExactText } from '../src/exact-search.js';
 
 const roots: string[] = [];
 afterEach(async () => Promise.all(roots.splice(0).map(root => rm(root, { recursive: true, force: true }))));
-async function fixture(): Promise<string> { const root = await mkdtemp(join(tmpdir(), 'localcode-exact-')); roots.push(root); return root; }
+async function fixture(): Promise<string> { const root = await mkdtemp(join(tmpdir(), 'codecraft-exact-')); roots.push(root); return root; }
 
 test('finds literal occurrences with exact one-based lines and duplicate highlights', async () => {
   const root = await fixture();

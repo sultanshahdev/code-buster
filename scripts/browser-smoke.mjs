@@ -9,11 +9,11 @@ import { chromium } from 'playwright';
 
 const PORT = 4173;
 const BASE_URL = 'http://127.0.0.1:' + PORT;
-const GITHUB = 'https://github.com/sultanshahdev/LocalCode-Intelligence';
+const GITHUB = 'https://github.com/sultanshahdev/codecraft';
 const REVISION = 'a'.repeat(40);
 const UPDATED_REVISION = 'b'.repeat(40);
 let refreshAttempts = 0;
-const LOCAL = '/tmp/localcode-browser-smoke';
+const LOCAL = '/tmp/codecraft-browser-smoke';
 const status = { eligible: true, coverage: 'complete', filesDiscovered: 2, filesProcessed: 2, warnings: [] };
 const localCandidate = { filePath: 'src/auth.ts', startLine: 3, endLine: 4, text: 'export function verifyToken() { return true; }', score: 0.82 };
 const githubCandidate = { filePath: 'src/search.ts', startLine: 12, endLine: 14, text: 'export function searchRepository() { return true; }', score: 0.76 };
@@ -74,7 +74,7 @@ async function run() {
     if (endpoint === '/api/health' && request.method() === 'GET') {
       observed.push({ endpoint, method: request.method() });
       observed.push({ endpoint, body: undefined });
-      return reply(route, { ok: true, service: 'localcode-intelligence', version: '0.1.0' });
+      return reply(route, { ok: true, service: 'codecraft', version: '0.1.0' });
     }
     const body = request.postDataJSON();
     observed.push({ endpoint, body });
@@ -87,10 +87,10 @@ async function run() {
         refreshAttempts += 1;
         if (refreshAttempts === 1) return reply(route, { ok: false, code: 'network', message: 'Temporary GitHub network failure' });
         return reply(route, { ok: true, repositoryId: 'github-updated-id',
-          source: { type: 'github', label: 'sultanshahdev/LocalCode-Intelligence', githubUrl: GITHUB, revision: UPDATED_REVISION }, status });
+          source: { type: 'github', label: 'sultanshahdev/codecraft', githubUrl: GITHUB, revision: UPDATED_REVISION }, status });
       }
       return reply(route, { ok: true, repositoryId: 'github-id',
-        source: { type: 'github', label: 'sultanshahdev/LocalCode-Intelligence', githubUrl: GITHUB, revision: REVISION }, status });
+        source: { type: 'github', label: 'sultanshahdev/codecraft', githubUrl: GITHUB, revision: REVISION }, status });
     }
     if (endpoint === '/api/search') {
       if (body.query === 'slow search') await pause(600);
@@ -164,7 +164,7 @@ async function run() {
   await page.getByRole('button', {
     name: 'Explore a repository'
   }).first().waitFor({ timeout: 20000 });
-  // Verify Code Buster landing page and open the investigation workspace.
+  // Verify CodeCraft landing page and open the investigation workspace.
   await page.getByRole('button', { name: 'Explore a repository' }).first().click();
   await page.waitForURL('**/app');
   const health = await page.evaluate(async () => {
@@ -179,7 +179,7 @@ async function run() {
   });
   assert.equal(health.status, 200);
   assert.match(health.contentType ?? '', /application\/json/i);
-  assert.equal(health.body.service, 'localcode-intelligence');
+  assert.equal(health.body.service, 'codecraft');
   await page.waitForFunction(() => document.querySelector('.workspace-app-layout') !== null);
   await page.getByRole('button', { name: 'Local repository' }).click();
   await page.getByRole('textbox', { name: 'Repository path' }).fill(LOCAL);

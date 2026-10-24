@@ -1,7 +1,7 @@
 import { test, describe, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { chromium, type Browser, type Page } from 'playwright';
-import { createLocalcodeServer } from '../src/server.js';
+import { createCodeCraftServer } from '../src/server.js';
 import { type Server } from 'node:http';
 import { resolve } from 'node:path';
 
@@ -12,7 +12,7 @@ describe('Frontend Browser Integration (Playwright)', () => {
   const BASE_URL = `http://127.0.0.1:${PORT}`;
 
   before(async () => {
-    server = createLocalcodeServer();
+    server = createCodeCraftServer();
     await new Promise<void>((res) => server.listen(PORT, '127.0.0.1', () => res()));
     browser = await chromium.launch({ headless: true });
   });
@@ -22,19 +22,19 @@ describe('Frontend Browser Integration (Playwright)', () => {
     if (server) await new Promise<void>((res) => server.close(() => res()));
   });
 
-  test('Code Buster landing page renders its branded investigation hero', async () => {
+  test('CodeCraft landing page renders its branded investigation hero', async () => {
     const page = await browser.newPage();
     await page.goto(`${BASE_URL}/`, { waitUntil: 'domcontentloaded' });
-    await page.locator('.cb-landing').waitFor({ state: 'visible' });
+    await page.locator('.cc-landing').waitFor({ state: 'visible' });
 
     // Verify title and main hero copy
     const title = await page.title();
-    assert.match(title, /Code Buster/);
+    assert.match(title, /CodeCraft/);
 
-    const headline = await page.locator('.cb-hero h1').textContent();
+    const headline = await page.locator('.cc-hero h1').textContent();
     assert.match(headline ?? '', /Every codebase/);
     assert.match(headline ?? '', /has a mystery/);
-    assert.ok(await page.locator('.buster-ghost').count() >= 1);
+    assert.ok(await page.locator('.codecraft-ghost').count() >= 1);
 
     // Verify Primary and Secondary CTAs
     const openWorkspaceBtn = page.getByRole('button', { name: 'Explore a repository' }).first();
@@ -42,14 +42,14 @@ describe('Frontend Browser Integration (Playwright)', () => {
 
     // The redesigned landing page teaches the investigation workflow through
     // three interactive evidence demonstrations.
-    assert.equal(await page.locator('.cb-payment-stage').count(), 1);
-    assert.equal(await page.locator('.cb-session-story').count(), 1);
-    assert.equal(await page.locator('.cb-webhook-story').count(), 1);
+    assert.equal(await page.locator('.cc-payment-stage').count(), 1);
+    assert.equal(await page.locator('.cc-session-story').count(), 1);
+    assert.equal(await page.locator('.cc-webhook-story').count(), 1);
     await page.getByRole('button', { name: /payment-worker\.ts/ }).click();
-    assert.match(await page.locator('.cb-payment-code header').textContent() ?? '', /payment-worker\.ts/);
+    assert.match(await page.locator('.cc-payment-code header').textContent() ?? '', /payment-worker\.ts/);
     await page.getByRole('button', { name: /HTTP endpoint/ }).click();
-    assert.match(await page.locator('.cb-webhook-detail h3').textContent() ?? '', /HTTP handler/);
-    assert.equal(await page.locator('.cb-map-illustration').count(), 1);
+    assert.match(await page.locator('.cc-webhook-detail h3').textContent() ?? '', /HTTP handler/);
+    assert.equal(await page.locator('.cc-map-illustration').count(), 1);
 
     await page.close();
   });
@@ -57,7 +57,7 @@ describe('Frontend Browser Integration (Playwright)', () => {
   test('Primary CTA navigates from Landing Page to Workspace at /app', async () => {
     const page = await browser.newPage();
     await page.goto(`${BASE_URL}/`, { waitUntil: 'domcontentloaded' });
-    await page.locator('.cb-landing').waitFor({ state: 'visible' });
+    await page.locator('.cc-landing').waitFor({ state: 'visible' });
 
     const openWorkspaceBtn = page.getByRole('button', { name: 'Explore a repository' }).first();
     await openWorkspaceBtn.click();
@@ -69,7 +69,7 @@ describe('Frontend Browser Integration (Playwright)', () => {
     // Verify return button navigates back to landing
     await page.locator('.workspace-back-btn').click();
     assert.equal(page.url(), `${BASE_URL}/`);
-    assert.ok(await page.locator('.cb-landing').isVisible());
+    assert.ok(await page.locator('.cc-landing').isVisible());
 
     await page.close();
   });
@@ -78,10 +78,10 @@ describe('Frontend Browser Integration (Playwright)', () => {
     const page = await browser.newPage();
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(`${BASE_URL}/`, { waitUntil: 'domcontentloaded' });
-    await page.locator('.cb-landing').waitFor({ state: 'visible' });
-    assert.ok(await page.locator('.cb-hero h1').isVisible());
-    assert.ok(await page.locator('.buster-ghost').first().isVisible());
-    assert.equal(await page.locator('.cb-hero-ghost').evaluate((element) => getComputedStyle(element).animationName), 'none');
+    await page.locator('.cc-landing').waitFor({ state: 'visible' });
+    assert.ok(await page.locator('.cc-hero h1').isVisible());
+    assert.ok(await page.locator('.codecraft-ghost').first().isVisible());
+    assert.equal(await page.locator('.cc-hero-ghost').evaluate((element) => getComputedStyle(element).animationName), 'none');
     await page.close();
   });
 
@@ -127,7 +127,7 @@ describe('Frontend Browser Integration (Playwright)', () => {
 
     // Search for a known identifier in this repo
     const searchInput = page.locator('.search-main-input');
-    await searchInput.fill('createLocalcodeServer');
+    await searchInput.fill('createCodeCraftServer');
     await page.locator('.search-input-row .kiro-btn--primary').click();
 
     // Verify exact matches appeared
@@ -160,8 +160,8 @@ describe('Frontend Browser Integration (Playwright)', () => {
     for (const vp of viewports) {
       const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
       await page.goto(`${BASE_URL}/`, { waitUntil: 'domcontentloaded' });
-    await page.locator('.cb-landing').waitFor({ state: 'visible' });
-      assert.ok(await page.locator('.cb-hero h1').isVisible());
+    await page.locator('.cc-landing').waitFor({ state: 'visible' });
+      assert.ok(await page.locator('.cc-hero h1').isVisible());
 
       await page.goto(`${BASE_URL}/app`, { waitUntil: 'domcontentloaded' });
     await page.locator('.workspace-app-layout').waitFor({ state: 'visible' });

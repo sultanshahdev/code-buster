@@ -68,7 +68,7 @@ export function HeroWorkflowDemo({ onOpenWorkspace }: { onOpenWorkspace: () => v
             <span className="hero-demo-dot hero-demo-dot--red" />
             <span className="hero-demo-dot hero-demo-dot--yellow" />
             <span className="hero-demo-dot hero-demo-dot--green" />
-            <span className="hero-demo-title-bar">LocalCode Intelligence — Demonstration Fixture</span>
+            <span className="hero-demo-title-bar">CodeCraft — Demonstration Fixture</span>
           </div>
 
           <div className="hero-demo-controls">
@@ -170,7 +170,7 @@ export function HeroWorkflowDemo({ onOpenWorkspace }: { onOpenWorkspace: () => v
                   <span className="demo-chip">rate limiting middleware</span>
                 </div>
                 <p className="demo-scene-caption">
-                  Describe what the code accomplishes in plain English. LocalCode retrieves candidate functions by semantic intent.
+                  Describe what the code accomplishes in plain English. CodeCraft retrieves candidate functions by semantic intent.
                 </p>
               </div>
             )}

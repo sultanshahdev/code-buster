@@ -96,7 +96,7 @@ export function SearchView({
           <div className="search-input-container">
             <Search size={18} className="search-input-icon" />
             <input
-              id="cb-investigation-query"
+              id="cc-investigation-query"
               type="text"
               className="search-main-input"
               placeholder={
@@ -246,7 +246,7 @@ export function SearchView({
             const isCopied = copiedId === id;
 
             return (
-              <article key={id} className={`candidate-card card animate-wf-rise cb-result-row ${activeCandidate?.filePath === c.filePath && activeCandidate?.startLine === c.startLine ? 'is-selected' : ''}`} tabIndex={0} onClick={() => onViewSource(c)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onViewSource(c); } }}>
+              <article key={id} className={`candidate-card card animate-wf-rise cc-result-row ${activeCandidate?.filePath === c.filePath && activeCandidate?.startLine === c.startLine ? 'is-selected' : ''}`} tabIndex={0} onClick={() => onViewSource(c)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onViewSource(c); } }}>
                 <div className="candidate-header">
                   <div className="candidate-rank">#{idx + 1}</div>
                   <div className="candidate-path-wrap">

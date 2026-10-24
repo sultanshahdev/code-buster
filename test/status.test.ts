@@ -15,7 +15,7 @@ afterEach(async () => {
 });
 
 async function fixture(): Promise<string> {
-  const path = await mkdtemp(join(tmpdir(), 'localcode-status-'));
+  const path = await mkdtemp(join(tmpdir(), 'codecraft-status-'));
   temporaryDirectories.push(path);
   return path;
 }

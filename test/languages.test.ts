@@ -22,7 +22,7 @@ import {
 const roots: string[] = [];
 afterEach(async () => Promise.all(roots.splice(0).map(root => rm(root, { recursive: true, force: true }))));
 async function fixture(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'localcode-lang-test-'));
+  const root = await mkdtemp(join(tmpdir(), 'codecraft-lang-test-'));
   roots.push(root);
   return root;
 }
