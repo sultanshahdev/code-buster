@@ -1,5 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, readFile, rename, rm, readdir, stat, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import type { Embedder, EmbeddingRequestOptions } from './retrieval.js';
 
@@ -8,14 +9,16 @@ const MAX_ENTRIES = 2_000;
 const SOURCE_PREFIX = 'File: ';
 
 export function defaultEmbeddingCacheDirectory(): string {
-  const configured = process.env['LOCALCODE_EMBEDDING_CACHE_DIR'];
+  const configured = process.env['CODECRAFT_EMBEDDING_CACHE_DIR'] ?? process.env['LOCALCODE_EMBEDDING_CACHE_DIR'];
   if (configured) return configured;
   const base = process.env['XDG_CACHE_HOME'] ?? join(process.env['HOME'] ?? '.', '.cache');
-  return join(base, 'localcode-intelligence', 'embeddings');
+  // Reuse existing records without moving or discarding users' cached vectors.
+  const legacy = join(base, 'localcode-intelligence', 'embeddings');
+  return existsSync(legacy) ? legacy : join(base, 'codecraft', 'embeddings');
 }
 
 export function persistentCacheDisabled(): boolean {
-  return process.env['LOCALCODE_DISABLE_PERSISTENT_CACHE'] === '1';
+  return (process.env['CODECRAFT_DISABLE_PERSISTENT_CACHE'] ?? process.env['LOCALCODE_DISABLE_PERSISTENT_CACHE']) === '1';
 }
 
 interface RecordShape { format: number; model: string; vector: number[]; }

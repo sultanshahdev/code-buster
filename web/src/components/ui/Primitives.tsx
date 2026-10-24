@@ -1,8 +1,8 @@
 import React from 'react';
-import { CodeBusterMark } from '../../brand/CodeBusterMark';
+import { CodeCraftMark } from '../../brand/CodeCraftMark';
 
-export function LocalCodeLogo({ size = 24, className = '' }: { size?: number; className?: string }) {
-  return <span className={className}><CodeBusterMark size={size} title="Code Buster" /></span>;
+export function CodeCraftLogo({ size = 24, className = '' }: { size?: number; className?: string }) {
+  return <span className={className}><CodeCraftMark size={size} title="CodeCraft" /></span>;
 }
 
 export function Button({

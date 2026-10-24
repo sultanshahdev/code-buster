@@ -4,7 +4,7 @@ import test from 'node:test';
 import { createLocalEmbedder, retrieveCandidates, selectDisplayCandidates } from '../src/retrieval.js';
 
 test('local model retrieves labeled expired-session evidence', {
-  skip: process.env['LOCALCODE_RUN_MODEL_TEST'] !== '1' ? 'set LOCALCODE_RUN_MODEL_TEST=1 to run local model integration' : false,
+  skip: process.env['CODECRAFT_RUN_MODEL_TEST'] !== '1' ? 'set CODECRAFT_RUN_MODEL_TEST=1 to run local model integration' : false,
   timeout: 120_000,
 }, async () => {
   const embedder = await createLocalEmbedder();

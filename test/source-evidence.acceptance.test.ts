@@ -44,7 +44,7 @@ test('AC-010A displays the exact fixture source identified by the candidate path
 });
 
 test.skip(
-  'AC-010B is deferred until LocalCode has a retained-result inspection workflow and source-state policy',
+  'AC-010B is deferred until CodeCraft has a retained-result inspection workflow and source-state policy',
   () => {},
 );
 

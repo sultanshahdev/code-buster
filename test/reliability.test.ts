@@ -5,15 +5,15 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import test from 'node:test';
 
-import { createLocalcodeServer } from '../src/server.js';
+import { createCodeCraftServer } from '../src/server.js';
 import { SearchExecutionController, SearchOverloadedError } from '../src/search-execution.js';
 import { prepareSourceScope } from '../src/source.js';
 
 async function withServer(
   run: (port: number) => Promise<void>,
-  options: Parameters<typeof createLocalcodeServer>[0] = {},
+  options: Parameters<typeof createCodeCraftServer>[0] = {},
 ): Promise<void> {
-  const server = createLocalcodeServer(options);
+  const server = createCodeCraftServer(options);
   await new Promise<void>(resolve => server.listen(0, '127.0.0.1', resolve));
   const address = server.address();
   assert.ok(address && typeof address !== 'string');
@@ -53,7 +53,7 @@ test('HTTP JSON endpoints reject malformed, oversized, and unsupported content s
 });
 
 test('repository navigator lists ordered supported relative files and preserves source guards', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'localcode-navigator-'));
+  const directory = await mkdtemp(join(tmpdir(), 'codecraft-navigator-'));
   try {
     await writeFile(join(directory, 'z.js'), 'export const z = 1;');
     await (await import('node:fs/promises')).mkdir(join(directory, 'src'));
@@ -102,7 +102,7 @@ test('search execution is bounded, releases failures, and skips aborted queued w
 });
 
 test('large files are skipped before bounded reading while normal source remains searchable', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'localcode-source-'));
+  const directory = await mkdtemp(join(tmpdir(), 'codecraft-source-'));
   try {
     await writeFile(join(directory, 'large.ts'), 'x'.repeat(300 * 1024));
     await writeFile(join(directory, 'small.ts'), 'export const usable = true;\n');
@@ -116,7 +116,7 @@ test('large files are skipped before bounded reading while normal source remains
 });
 
 test('completed JSON request receives asynchronous semantic-search response', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'localcode-reliability-'));
+  const directory = await mkdtemp(join(tmpdir(), 'codecraft-reliability-'));
   try {
     await withServer(async port => {
       const response = await post(port, JSON.stringify({ repositoryPath: directory, query: 'find auth' }));
@@ -145,7 +145,7 @@ test('completed JSON request receives asynchronous semantic-search response', as
 });
 
 test('exact text API validates input and searches a prepared local repository without semantic inference', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'localcode-exact-api-'));
+  const directory = await mkdtemp(join(tmpdir(), 'codecraft-exact-api-'));
   try {
     await writeFile(join(directory, 'auth.ts'), 'export const verifyToken = () => verifyToken();\n');
     await withServer(async port => {
@@ -159,4 +159,13 @@ test('exact text API validates input and searches a prepared local repository wi
       assert.equal(response.matches[0].line, 1);
     });
   } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
+test('health exposes the CodeCraft JSON runtime contract', async () => {
+  await withServer(async port => {
+    const response = await fetch(`http://127.0.0.1:${port}/api/health`);
+    assert.equal(response.status, 200);
+    assert.match(response.headers.get('content-type') ?? '', /application\/json/);
+    assert.deepEqual(await response.json(), { ok: true, service: 'codecraft', version: '0.1.0' });
+  });
 });

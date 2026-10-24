@@ -17,7 +17,7 @@ export function parseGitHubRepositoryUrl(value: string): GitHubRepository {
 export class GitHubRepositoryAcquirer {
   private readonly prepared = new Map<string, AcquiredGitHubRepository>(); private readonly inFlight = new Map<string, Promise<AcquiredGitHubRepository>>();
   private readonly references = new Map<string, number>(); private readonly retired = new Set<string>();
-  constructor(private readonly root = join(tmpdir(), 'localcode-github'), private readonly timeoutMs = 60_000) {}
+  constructor(private readonly root = join(tmpdir(), 'codecraft-github'), private readonly timeoutMs = 60_000) {}
   async acquire(value: string, refresh = false): Promise<AcquiredGitHubRepository> {
     const repository = parseGitHubRepositoryUrl(value); const key = repository.canonicalUrl.toLowerCase(); const cached = this.prepared.get(key);
     if (cached && !refresh) return cached; const running = this.inFlight.get(key); if (running) return running;

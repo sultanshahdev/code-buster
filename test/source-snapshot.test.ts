@@ -8,7 +8,7 @@ import { prepareRepositorySourceSnapshot } from '../src/source.js';
 const roots: string[] = [];
 afterEach(async () => Promise.all(roots.splice(0).map(root => rm(root, { recursive: true, force: true }))));
 test('shared snapshot applies global file and aggregate byte budgets deterministically', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'localcode-snapshot-')); roots.push(root);
+  const root = await mkdtemp(join(tmpdir(), 'codecraft-snapshot-')); roots.push(root);
   for (let index = 0; index < 501; index++) await writeFile(join(root, `${String(index).padStart(3, '0')}.py`), 'def item(): pass\n');
   const fileLimited = await prepareRepositorySourceSnapshot(root);
   assert.equal(fileLimited.files.length, 500); assert.equal(fileLimited.scope.truncated, true); assert.match(fileLimited.scope.warnings.join(' '), /File limit/);

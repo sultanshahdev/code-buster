@@ -2,7 +2,7 @@
 
 ## 1. Overview and Product Vision
 
-LocalCode Intelligence is designed as a **privacy-first, local-first, multilingual code intelligence platform** for semantic repository search, structural understanding, and source-grounded navigation.
+CodeCraft is designed as a **privacy-first, local-first, multilingual code intelligence platform** for semantic repository search, structural understanding, and source-grounded navigation.
 
 All source parsing, embedding inference, and navigation remain strictly local, preserving read-only analysis without executing repository code.
 

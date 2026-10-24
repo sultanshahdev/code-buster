@@ -17,10 +17,10 @@ import {
 import { assessRelevance } from '../src/relevance.js';
 import { BENCHMARK_DATASET, type BenchmarkQuery } from './benchmark-dataset.js';
 
-const REPO_ROOT = process.env['LOCALCODE_BENCHMARK_ROOT'] ?? '/home/sultan/Desktop/repos/benchmarks';
-const SELECTED_REPOS = (process.env['LOCALCODE_BENCHMARK_REPOS'] ?? 'express,axios,fastify,localcode')
+const REPO_ROOT = process.env['CODECRAFT_BENCHMARK_ROOT'] ?? '/home/sultan/Desktop/repos/benchmarks';
+const SELECTED_REPOS = (process.env['CODECRAFT_BENCHMARK_REPOS'] ?? 'express,axios,fastify,localcode')
   .split(',').map(value => value.trim()).filter(Boolean);
-const SELECTED_SPLIT = process.env['LOCALCODE_BENCHMARK_SPLIT'] ?? 'all';
+const SELECTED_SPLIT = process.env['CODECRAFT_BENCHMARK_SPLIT'] ?? 'all';
 const REPO_PATHS: Record<string, string> = {
   express: resolve(REPO_ROOT, 'express'),
   axios: resolve(REPO_ROOT, 'axios'),
@@ -311,16 +311,16 @@ async function loadScopes(): Promise<Record<string, SourceScope>> {
 
 async function main() {
   if (SELECTED_REPOS.length === 0 || SELECTED_REPOS.some(repo => !(repo in REPO_PATHS))) {
-    throw new Error('LOCALCODE_BENCHMARK_REPOS must contain at least one of express, axios, fastify, localcode.');
+    throw new Error('CODECRAFT_BENCHMARK_REPOS must contain at least one of express, axios, fastify, localcode.');
   }
   if (!['all', 'tuning', 'evaluation'].includes(SELECTED_SPLIT)) {
-    throw new Error('LOCALCODE_BENCHMARK_SPLIT must be all, tuning, or evaluation.');
+    throw new Error('CODECRAFT_BENCHMARK_SPLIT must be all, tuning, or evaluation.');
   }
   const allowedConfigs: PipelineConfig[] = ['merged-baseline', 'intent-aware', 'semantic-only', 'earlier-hybrid', 'corrected-hybrid'];
-  const configs = (process.env['LOCALCODE_BENCHMARK_CONFIGS'] ?? 'merged-baseline,intent-aware')
+  const configs = (process.env['CODECRAFT_BENCHMARK_CONFIGS'] ?? 'merged-baseline,intent-aware')
     .split(',').map(item => item.trim()).filter(Boolean) as PipelineConfig[];
   if (configs.length === 0 || configs.some(config => !allowedConfigs.includes(config))) {
-    throw new Error('LOCALCODE_BENCHMARK_CONFIGS accepts: ' + allowedConfigs.join(', '));
+    throw new Error('CODECRAFT_BENCHMARK_CONFIGS accepts: ' + allowedConfigs.join(', '));
   }
   console.log('Benchmark checkout root: ' + REPO_ROOT);
   console.log('Selected repositories: ' + SELECTED_REPOS.join(', '));
@@ -362,7 +362,7 @@ async function main() {
     allMetrics[cfg] = await runBenchmark(cfg, embedder, modelInitLatencyMs, scopes);
   }
 
-  const reportPath = process.env['LOCALCODE_BENCHMARK_OUTPUT'] ?? '/tmp/benchmark-metrics.json';
+  const reportPath = process.env['CODECRAFT_BENCHMARK_OUTPUT'] ?? '/tmp/benchmark-metrics.json';
   writeFileSync(reportPath, JSON.stringify({
     repositoryCommits: Object.fromEntries(SELECTED_REPOS.map(repo => [repo, REPO_COMMITS[repo]])),
     selectedSplit: SELECTED_SPLIT,

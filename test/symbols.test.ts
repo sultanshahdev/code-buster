@@ -6,7 +6,7 @@ import test, { afterEach } from 'node:test';
 import { listRepositorySymbols, findPossibleUsages, resolveDefinition } from '../src/symbols.js';
 
 const roots: string[] = []; afterEach(async () => Promise.all(roots.splice(0).map(root => rm(root, { recursive: true, force: true }))));
-async function fixture() { const root = await mkdtemp(join(tmpdir(), 'localcode-symbols-')); roots.push(root); return root; }
+async function fixture() { const root = await mkdtemp(join(tmpdir(), 'codecraft-symbols-')); roots.push(root); return root; }
 test('extracts declarations and nested members with source-accurate locations', async () => {
   const root = await fixture(); await writeFile(join(root, 'types.ts'), 'export function authenticateUser() {}\nclass SomeService { run() {} }\ninterface Shape { draw(): void }\ntype ID = string;\nenum Mode { On }\nconst handler = () => {};\n');
   const result = await listRepositorySymbols(root); const names = result.symbols.map(s => `${s.kind}:${s.containerName ?? ''}:${s.name}:${s.startLine}`);

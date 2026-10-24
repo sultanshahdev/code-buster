@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown, ArrowRight } from 'lucide-react';
-import { Button, LocalCodeLogo } from '../../components/ui/Primitives';
+import { Button, CodeCraftLogo } from '../../components/ui/Primitives';
 
 interface FaqItem {
   q: string;
@@ -9,8 +9,8 @@ interface FaqItem {
 
 const FAQS: FaqItem[] = [
   {
-    q: 'What is LocalCode Intelligence?',
-    a: 'LocalCode Intelligence is a local-first repository intelligence and code exploration platform designed to help developers quickly understand unfamiliar source code through semantic search, exact text scanning, symbol navigation, and an interactive 2D repository map.',
+    q: 'What is CodeCraft?',
+    a: 'CodeCraft is a local-first repository intelligence and code exploration platform designed to help developers quickly understand unfamiliar source code through semantic search, exact text scanning, symbol navigation, and an interactive 2D repository map.',
   },
   {
     q: 'Does it run completely locally?',
@@ -21,8 +21,8 @@ const FAQS: FaqItem[] = [
     a: 'Yes. You can paste any public GitHub repository URL. The backend clones the repository into an isolated local cache, checks source eligibility, and prepares it for search and symbol navigation without requiring API keys or account setup.',
   },
   {
-    q: 'Does LocalCode modify my source code or Git history?',
-    a: 'No. LocalCode performs purely read-only source analysis. It never creates index files inside your project directory, never creates commits or branches, and never alters your files.',
+    q: 'Does CodeCraft modify my source code or Git history?',
+    a: 'No. CodeCraft performs purely read-only source analysis. It never creates index files inside your project directory, never creates commits or branches, and never alters your files.',
   },
   {
     q: 'What is the difference between semantic search and exact search?',
@@ -34,7 +34,7 @@ const FAQS: FaqItem[] = [
   },
   {
     q: 'Which programming languages are supported?',
-    a: 'LocalCode includes language adapters with structural AST analysis for JavaScript/TypeScript, Python, Go, Rust, Java, C, C++, C#, Ruby, PHP, and Bash, with automatic fallback for general text across supported source files.',
+    a: 'CodeCraft includes language adapters with structural AST analysis for JavaScript/TypeScript, Python, Go, Rust, Java, C, C++, C#, Ruby, PHP, and Bash, with automatic fallback for general text across supported source files.',
   },
 ];
 
@@ -101,8 +101,8 @@ export function FaqAndFooterSection({ onOpenWorkspace }: { onOpenWorkspace: () =
         <div className="landing-footer-inner">
           <div className="footer-brand-col">
             <div className="footer-brand">
-              <LocalCodeLogo size={24} />
-              <span>LocalCode Intelligence</span>
+              <CodeCraftLogo size={24} />
+              <span>CodeCraft</span>
             </div>
             <p className="footer-tagline">
               Local-first repository intelligence and code exploration platform.
@@ -132,7 +132,7 @@ export function FaqAndFooterSection({ onOpenWorkspace }: { onOpenWorkspace: () =
         </div>
 
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} LocalCode Intelligence. Runs entirely on your local machine.</span>
+          <span>© {new Date().getFullYear()} CodeCraft. Runs entirely on your local machine.</span>
           <span>127.0.0.1:4317</span>
         </div>
       </footer>

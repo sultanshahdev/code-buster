@@ -20,7 +20,7 @@ afterEach(async () => {
 });
 
 async function createFixture(): Promise<string> {
-  const directory = await mkdtemp(join(tmpdir(), 'localcode-test-'));
+  const directory = await mkdtemp(join(tmpdir(), 'codecraft-test-'));
   temporaryDirectories.push(directory);
   return directory;
 }

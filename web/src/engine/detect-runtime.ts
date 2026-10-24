@@ -10,7 +10,7 @@ export async function hasNodeApi(fetcher: typeof fetch = fetch): Promise<boolean
     if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) return false;
     const body: unknown = await response.json();
     return typeof body === 'object' && body !== null &&
-      (body as { service?: unknown }).service === 'localcode-intelligence';
+      (body as { service?: unknown }).service === 'codecraft';
   } catch { return false; }
 }
 

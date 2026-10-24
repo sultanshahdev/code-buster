@@ -1,17 +1,17 @@
-# Code Buster
+# CodeCraft
 
 **Find the code behind the behavior.**
 
-Code Buster is a **local-first repository investigation tool** that helps developers explore unfamiliar codebases, find implementations from natural-language questions, compare promising matches, and follow real source evidence.
+CodeCraft is a **local-first source-code intelligence and repository investigation platform** that helps developers explore unfamiliar codebases, find implementations from natural-language questions, compare promising matches, and follow real source evidence.
 
-Instead of requiring you to know a function name or file path, Code Buster lets you investigate questions like:
+Instead of requiring you to know a function name or file path, CodeCraft lets you investigate questions like:
 
 - *Where is a failed payment scheduled for another attempt?*
 - *Where is an expired session rejected?*
 - *Which function verifies incoming webhook signatures?*
 - *Where are excessive API requests blocked?*
 
-A search can surface several plausible functions. Code Buster ranks candidates and exposes their **repository-relative paths, line ranges, and source excerpts** so you can determine what each implementation actually does. **Ranking is evidence, not proof of functional correctness.**
+A search can surface several plausible functions. CodeCraft ranks candidates and exposes their **repository-relative paths, line ranges, and source excerpts** so you can determine what each implementation actually does. **Ranking is evidence, not proof of functional correctness.**
 
 ## Highlights
 
@@ -27,19 +27,19 @@ A search can surface several plausible functions. Code Buster ranks candidates a
 | **Source-grounded navigation** | Open actual file content with line numbers, contextual excerpts, coverage notices, and commit-pinned GitHub links where available. |
 | **Local-first processing** | Run the search engine and embedding model locally, without sending repository content to a hosted AI inference service. |
 
-The web experience includes the Code Buster landing page, illustrative code-investigation stories, and an interactive repository workspace. Marketing examples illustrate concepts and are **not live search outputs**.
+The web experience includes the CodeCraft landing page, illustrative code-investigation stories, and an interactive repository workspace. Marketing examples illustrate concepts and are **not live search outputs**.
 
 ## How it works
 
-1. **Choose a repository.** Enter a path to a local folder, or a public GitHub repository URL. GitHub access requires a network connection and Git.
-2. **Prepare the source.** Code Buster discovers eligible files within explicit read and size limits.
+1. **Choose a repository.** Enter a path to a local folder, or a public GitHub repository URL. GitHub access requires a network connection; the Node engine also requires Git.
+2. **Prepare the source.** CodeCraft discovers eligible files within explicit read and size limits.
 3. **Ask a question.** Use semantic search for behavior-oriented questions, or exact search for literal code.
 4. **Compare candidates.** Review paths, excerpts, and ranking signals instead of assuming the first result is correct.
 5. **Follow the evidence.** Open source lines, browse files and symbols, inspect possible usages, and navigate definitions where supported.
 
 ### Search vs. verification
 
-Code Buster does **not** execute repository code or formally prove what a function does. Semantic scores are ranking signals rather than probabilities. Partial indexing coverage, unsupported language capabilities, and uncertain results should be evaluated alongside the source.
+CodeCraft does **not** execute repository code or formally prove what a function does. Semantic scores are ranking signals rather than probabilities. Partial indexing coverage, unsupported language capabilities, and uncertain results should be evaluated alongside the source.
 
 ## Supported languages and capabilities
 
@@ -70,8 +70,8 @@ The registered parser capabilities differ by language. Structural usage lookup i
 ### Install
 
 ```bash
-git clone https://github.com/sultanshahdev/code-buster.git
-cd code-buster
+git clone https://github.com/sultanshahdev/codecraft.git
+cd codecraft
 npm ci
 npm ci --prefix web
 ```
@@ -95,17 +95,17 @@ Open **http://127.0.0.1:4317**. This serves the built React frontend and API fro
 
 ### CLI
 
-The preferred command is `codebuster`; `localcode` remains a compatibility alias.
+The CLI command is `codecraft`.
 
 From a checkout, use the npm script without global installation:
 
 ```bash
-npm run codebuster -- repo check .
-npm run codebuster -- repo status .
-npm run codebuster -- search "where is an expired session rejected?" --repo .
+npm run codecraft -- repo check .
+npm run codecraft -- repo status .
+npm run codecraft -- search "where is an expired session rejected?" --repo .
 ```
 
-For a separately installed CLI binary, the corresponding syntax is `codebuster repo check <path>`, `codebuster repo status <path>`, and `codebuster search "<question>" --repo <path>`.
+For a separately installed CLI binary, the corresponding syntax is `codecraft repo check <path>`, `codecraft repo status <path>`, and `codecraft search "<question>" --repo <path>`.
 
 ## Architecture
 
@@ -159,7 +159,7 @@ Requests are JSON and repository-dependent routes require a prepared repository 
 
 ## Free website deployment — Cloudflare Pages
 
-The **landing page and illustrative product demos** can be hosted on Cloudflare Pages using this repository:
+The **landing page, illustrative product demos, and browser-native workspace** can be hosted on Cloudflare Pages using this repository:
 
 | Setting | Value |
 | --- | --- |
@@ -169,9 +169,9 @@ The **landing page and illustrative product demos** can be hosted on Cloudflare 
 | Build command | `npm run build` |
 | Output directory | `dist` |
 
-Cloudflare Pages uses the browser-native execution engine when a validated local `/api/health` response is unavailable. It fetches public GitHub metadata and a pinned commit tree directly from GitHub, then keeps a bounded in-memory snapshot (500 source files, 256 KiB/file, 5 MiB aggregate). Exact search, source inspection, file exploration, the map, basic JS/TS declarations, possible lexical usages, and browser-side semantic retrieval are available without a Code Buster server or credentials. The embedding worker and its inference runtime are lazy-loaded only when semantic search is used.
+Cloudflare Pages uses the browser-native execution engine when a validated local `/api/health` response is unavailable. It fetches public GitHub metadata and a pinned commit tree directly from GitHub, then keeps a bounded in-memory snapshot (500 source files, 256 KiB/file, 5 MiB aggregate). Exact search, source inspection, file exploration, the map, basic JS/TS declarations, possible lexical usages, and browser-side semantic retrieval are available without a CodeCraft server or credentials. The embedding worker and its inference runtime are lazy-loaded only when semantic search is used.
 
-Static hosting cannot access a visitor's local filesystem. The Local repository option therefore reports that it requires the localhost Code Buster application. Do not expose the existing localhost API to the internet as a workaround.
+Static hosting cannot access a visitor's local filesystem. The Local repository option therefore reports that it requires the localhost CodeCraft application. Do not expose the existing localhost API to the internet as a workaround.
 
 ## Development checks
 
@@ -179,13 +179,14 @@ Static hosting cannot access a visitor's local filesystem. The Local repository 
 npm run build
 npm test
 node scripts/browser-smoke.mjs
+node scripts/browser-native-smoke.mjs
 ```
 
 Tests may require Playwright Chromium to be installed. See the CI workflow for its browser setup.
 
 ## Roadmap and limitations
 
-- Browser-native, server-free repository exploration is a **future milestone**, not an implemented deployment mode.
+- Browser-native repository exploration is implemented for public GitHub repositories; local folders require the Node application.
 - A public multi-user server would need a separate security and resource-isolation design.
 - Go to Definition is currently compiler-backed for JS/TS; other language adapters provide syntax-aware structural capabilities, not equivalent precise resolution.
 - Semantic retrieval can miss relevant regions or rank an unrelated result; always inspect evidence.
@@ -194,4 +195,4 @@ Tests may require Playwright Chromium to be installed. See the CI workflow for i
 
 ---
 
-**Code Buster** — *Find the code behind the behavior.*
+**CodeCraft** — *Find the code behind the behavior.*

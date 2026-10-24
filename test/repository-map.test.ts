@@ -9,7 +9,7 @@ const roots: string[] = [];
 afterEach(async () => Promise.all(roots.splice(0).map(root => rm(root, { recursive: true, force: true }))));
 
 test('repository map is deterministic, metadata-only, and excludes ignored and symlinked entries', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'localcode-map-')); roots.push(root);
+  const root = await mkdtemp(join(tmpdir(), 'codecraft-map-')); roots.push(root);
   await mkdir(join(root, 'src')); await mkdir(join(root, 'node_modules'));
   await writeFile(join(root, 'src', 'main.ts'), 'export const main = 1;\n');
   await writeFile(join(root, 'README.md'), '# demo\n');
@@ -25,7 +25,7 @@ test('repository map is deterministic, metadata-only, and excludes ignored and s
 });
 
 test('repository map reports a bounded partial manifest', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'localcode-map-limit-')); roots.push(root);
+  const root = await mkdtemp(join(tmpdir(), 'codecraft-map-limit-')); roots.push(root);
   await writeFile(join(root, 'a.ts'), ''); await writeFile(join(root, 'b.ts'), '');
   const map = await buildRepositoryMap(root, undefined, { maxNodes: 2, maxDepth: 32 });
   assert.equal(map.nodes.length, 2);

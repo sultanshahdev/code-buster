@@ -1,10 +1,10 @@
-# LocalCode Intelligence — Frontend Design System Specification
+# CodeCraft — Frontend Design System Specification
 
 ## 1. Executive Summary & Design Foundations
 
-This specification establishes the visual and interaction design tokens for **LocalCode Intelligence**, directly influenced by the Kiro website design reference (`template.html`). 
+This specification establishes the visual and interaction design tokens for **CodeCraft**, directly influenced by the Kiro website design reference (`template.html`).
 
-The redesign strictly bifurcates LocalCode Intelligence into two dedicated environments sharing a unified visual language:
+The redesign strictly bifurcates CodeCraft into two dedicated environments sharing a unified visual language:
 1. **Environment A — Product Landing Page (`/`)**: Storytelling, wide responsive grid, oversized rounded headings, choreographed entrance animations, interactive multi-scene product demonstration, capabilities showcase, workflow diagram, and transparent privacy disclosures.
 2. **Environment B — Engineering Workspace (`/app`)**: Compact, dense, high-utility developer workspace featuring multi-pane navigation, repository switcher, instant search with ranked inspectable candidates, literal exact search, symbol explorer with usage inspection, 2D interactive repository map, and a slide-out source inspector drawer.
 

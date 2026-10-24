@@ -7,7 +7,7 @@ export function WorkflowSection() {
       step: '01',
       icon: <FolderGit2 size={24} className="wf-step-icon" />,
       title: 'Connect Repository',
-      desc: 'Point to any local project folder or public GitHub URL. LocalCode discovers source files and checks eligibility without touching git commits or creating temp clutter.',
+      desc: 'Point to any local project folder or public GitHub URL. CodeCraft discovers source files and checks eligibility without touching git commits or creating temp clutter.',
     },
     {
       step: '02',
@@ -27,7 +27,7 @@ export function WorkflowSection() {
     <section id="how-it-works" className="landing-workflow-section">
       <div className="landing-section-header">
         <span className="section-pre-title">Simple 3-Step Workflow</span>
-        <h2 className="section-main-title">How LocalCode works</h2>
+        <h2 className="section-main-title">How CodeCraft works</h2>
         <p className="section-sub-title">From an unfamiliar repo to verified source code in seconds.</p>
       </div>
 

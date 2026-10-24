@@ -32,7 +32,7 @@ export function FileExplorerView({ files, loading, error, onOpen, onOpenSymbols 
           <span>Repository Files</span>
           <span className="files-count-badge">{files.length}</span>
         </div>
-        {onOpenSymbols && <button type="button" className="cb-explore-symbols" onClick={onOpenSymbols}><Code2 size={14}/>Symbols</button>}
+        {onOpenSymbols && <button type="button" className="cc-explore-symbols" onClick={onOpenSymbols}><Code2 size={14}/>Symbols</button>}
 
         <div className="files-search-wrap">
           <Search size={14} className="files-search-icon" />

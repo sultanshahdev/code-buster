@@ -91,7 +91,7 @@ export function WorkspacePage({ onReturnToLanding }: WorkspacePageProps) {
       if (editing || !repoStatus) return;
       if (event.key === '/' || ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k')) {
         event.preventDefault();
-        document.getElementById('cb-investigation-query')?.focus();
+        document.getElementById('cc-investigation-query')?.focus();
       }
     };
     window.addEventListener('keydown', focusSearch);
@@ -355,7 +355,7 @@ export function WorkspacePage({ onReturnToLanding }: WorkspacePageProps) {
   };
 
   return (
-    <div className="workspace-app-layout cb-workspace">
+    <div className="workspace-app-layout cc-workspace">
       {/* Workspace App Shell Header & Navigation */}
       <WorkspaceHeader
         repoPath={repoPath}
@@ -379,7 +379,7 @@ export function WorkspacePage({ onReturnToLanding }: WorkspacePageProps) {
       />
 
       {/* Main Workspace Body */}
-      <main className={`workspace-main-area cb-workspace-main ${activeCandidate ? 'cb-workspace-main--inspecting' : ''}`}>
+      <main className={`workspace-main-area cc-workspace-main ${activeCandidate ? 'cc-workspace-main--inspecting' : ''}`}>
         <div className="workspace-content-pane">
           {activeTab === 'overview' && (
             <OverviewView

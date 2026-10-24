@@ -10,7 +10,7 @@ const temporaryDirectories: string[] = [];
 afterEach(async () => Promise.all(temporaryDirectories.splice(0).map(path => rm(path, { recursive: true, force: true }))));
 
 async function fixture(): Promise<string> {
-  const path = await mkdtemp(join(tmpdir(), 'localcode-source-'));
+  const path = await mkdtemp(join(tmpdir(), 'codecraft-source-'));
   temporaryDirectories.push(path);
   return path;
 }
